@@ -26,9 +26,9 @@ ps: 单核多线程未必会提高效率，更多的抢占式调度和上下文�
 
 # Go协程调度
 
+![goroutine](./images/goroutine.jpg)
+
 > 参考链接
 > 
 > * [golang之协程](http://www.cnblogs.com/chenny7/p/4498322.html)
 > * [goroutine的生老病死](https://tiancaiamao.gitbooks.io/go-internals/content/zh/05.2.html)
-
-
