@@ -92,7 +92,94 @@ channel分为以下两种类型：
 
 ## 基于channel实现的异步日志模型
 
+```javascript
+package main
+
+import (
+	"fmt"
+	"io"
+	"os"
+	"strconv"
+	"sync"
+)
+
+var globalWg sync.WaitGroup
+
+// Logger struct implement log
+type Logger struct {
+	channel chan string
+	wg      sync.WaitGroup
+}
+
+// NewLog return a new Logger
+func NewLog(w io.Writer, cap int) *Logger {
+	l := Logger{
+		channel: make(chan string, cap),
+	}
+
+	l.wg.Add(1)
+	go func() {
+		defer l.wg.Done()
+		for v := range l.channel {
+			fmt.Fprintln(w, v)
+		}
+	}()
+
+	return &l
+}
+
+// Close close logger
+func (l *Logger) Close() {
+	close(l.channel)
+	l.wg.Wait()
+}
+
+// Println print msg
+func (l *Logger) Println(v string) {
+	select {
+	case l.channel <- v:
+	default:
+		fmt.Printf("output: %s\n", v)
+	}
+}
+
+func main() {
+	globalWg.Add(1)
+	log := NewLog(os.Stdout, 10)
+	for i := 0; i < 12; i++ {
+		globalWg.Add(1)
+		go func(i int) {
+			log.Println(strconv.Itoa(i))
+		}(i)
+	}
+
+	globalWg.Wait()
+}
+```
+
+执行结果：
+
+```javascript
+output: 6
+0
+1
+3
+5
+4
+8
+11
+2
+9
+10
+7
+```
+
+* 可以看到，超过并发数的时候执行了default行为输出了`output: 6`
+* 当然，我们也可以自定义default行为，比如超过并发数的时候停等一小段时间再写入；或者是不设置default行为，超过并发时阻塞写入直到解除阻塞为止。
+* 这个模型还可以结合协程池[grpool](http://km.netease.com/article/245063)，来做一个后台并发写入的日志系统
+
 # Suggestion
 	
 * 单核过多线程未必会提高效率，更多的抢占式调度和上下文切换，有时反而会让效率降低；经验之谈：3 thread per core is best(from William Kennedy)
-* 对于cpu-bound work，高并发未必会提高效率(cpu密集型工作的切换还是需要cpu来调度)；对于io-bound work，应该最大限度地利用并发来提高效率。
+* 对于cpu-bound work，高并发未必会提高效率(cpu密集型工作的切换还是需要cpu来调度)
+* 对于io-bound work，应该最大限度地利用并发来提高效率
