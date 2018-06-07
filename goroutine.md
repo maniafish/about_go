@@ -19,7 +19,7 @@ Go的协程
 
 ps: 单核多线程未必会提高效率，更多的抢占式调度和上下文切换，有时反而会让效率降低；经验之谈：3 thread per core is best(from William Kennedy)
 
-> 参考链接
+> 参考链接：
 > 
 > * [Golang协程详解](http://www.cnblogs.com/liang1101/p/7285955.html)
 > * [通用寄存器](https://blog.csdn.net/sinat_38972110/article/details/72927858)
@@ -38,7 +38,7 @@ goroutine有三个状态：
 * runnable: 协程处于本地队列，等待执行
 * running: 协程正在运行
 
-## goroutine的创建
+## G的创建
 
 1. go调用`runtime.newproc()`方法来创建G
 2. 首先，检查当前P的空闲队列中有没有可用的G，如果有，就直接从中取一个；如果没有，则分配一个新的G，挂载到P的本地队列中
@@ -61,8 +61,33 @@ goroutine有三个状态：
 1. 当G执行完毕返回后，go会调用`runtime.exit()`方法回收G(包括栈, SP, PC...)
 2. 然后将G放入P的空闲队列中，等待`runtime.newproc()`方法取出
 
-> 参考链接
+> 参考链接：
 > 
 > * [golang之协程](http://www.cnblogs.com/chenny7/p/4498322.html)
 > * [goroutine的生老病死](https://tiancaiamao.gitbooks.io/go-internals/content/zh/05.2.html)
 > * [谈goroutine调度器](https://tonybai.com/2017/06/23/an-intro-about-goroutine-scheduler/)
+
+# Go channel
+
+channel是go协程通信的主要方式。channel不是队列，可以把它理解为一种信号模型(from William Kennedy)
+
+![channel_type](./images/signaling_with_data.png)
+
+channel分为以下两种类型：
+
+* 一种是无缓冲的channel，在创建channel时不指定长度。无缓冲的channel若没有用户读取，在写入时会始终阻塞，通常可以作为保证信号使用
+* 另一种是缓冲的channel，即buffer channel，在创建channel时指定长度(>=1)。buffer channel为空时会阻塞读，buffer channel满时会阻塞写，可以作为数据传输使用
+	
+> 当buffer channel的长度指定为1时，可以作为延迟保证信号使用(信号发送方发送信号后不阻塞等待接收方接收)
+		
+![channel_state](./images/channel_state.png)
+
+* channel有以下三种状态：
+
+	* nil：初始化channel。无法读写
+	* open：通过make分配channel空间。可读可写
+	* close: 通过`close()`关闭channel。close的channel != nil；可以继续从中读取数据，但是不能写入(panic)
+
+> 参考链接：
+> 
+> [gotraining/concurrency/channels](https://github.com/ardanlabs/gotraining/blob/master/topics/go/concurrency/channels/README.md)
