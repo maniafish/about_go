@@ -6,3 +6,4 @@
 * [III. Go的垃圾回收](gc.md)
 * [IV. Go的协程](goroutine.md)
 * [V. Go的调试信息](stack_trace.md)
+* [VI. Go的interface](composition.md)
