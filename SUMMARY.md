@@ -7,6 +7,6 @@
 * [IV. Go的协程](goroutine.md)
 * [V. Go的调试信息](stack_trace.md)
 * [VI. Go的interface](composition.md)
-* [VII. Go的slice](slice.md)
-* [VIII. Go的变量作用域](operator.md)
+* [VII. Go的变量作用域](operator.md)
+* [VIII. Go的slice](slice.md)
 * [声明](notice.md)

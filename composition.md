@@ -70,7 +70,7 @@ func main() {
 		...
 	}
 	
-	s := System{&a, &b}
+	s := System{a, b}
 	data := ...
 	err := Api(&s, data)
 	if err != nil {
@@ -97,7 +97,18 @@ type Storer interface {
 	Store(data interface{})
 }
 
-// define A1 ~ A3 implementing Storer
+
+// A1 is a system for data collection
+type A1 struct {
+	...
+}
+
+// Store function for storing data
+func (a *A1) Store(data interface{}) {
+	...
+}
+
+// define A2 ~ A3 implementing Storer
 ...
 
 // Puller is an interface for data pulling 
@@ -105,7 +116,17 @@ type Puller interface {
 	Pull(data interface{})
 }
 
-// define B1 ~ B3 implementing Puller
+// B1 is a system for data pulling 
+type B1 struct {
+	...
+}
+
+// Pull function for pulling data
+func (b *B1) Pull(data interface{}) {
+	...
+}
+
+// define B2 ~ B3 implementing Puller
 ...
 
 // System wraps Storer and Puller together
@@ -242,7 +263,17 @@ type Storer interface {
 	Store(data interface{})
 }
 
-// define A1 ~ A3 implementing Storer
+// A1 is a system for data collection
+type A1 struct {
+	...
+}
+
+// Store function for storing data
+func (a *A1) Store(data interface{}) {
+	...
+}
+
+// define A2 ~ A3 implementing Storer
 ...
 
 // Puller is an interface for data pulling 
@@ -250,7 +281,17 @@ type Puller interface {
 	Pull(data interface{})
 }
 
-// define B1 ~ B3 implementing Puller
+// B1 is a system for data pulling 
+type B1 struct {
+	...
+}
+
+// Pull function for pulling data
+func (b *B1) Pull(data interface{}) {
+	...
+}
+
+// define B2 ~ B3 implementing Puller
 ...
 
 // Api providing api for users

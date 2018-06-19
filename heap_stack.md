@@ -5,10 +5,10 @@ Go的堆栈分配
 
 # Golang的程序栈
 
-* 每个function维护这一个栈帧(stack frame)，默认最大为4KB
-* 当function的栈空间不足时，golang会调用`runtime.morestack`(汇编实现：asm_xxx.s)来进行动态扩容
+* 每个goroutine维护着一个栈空间，默认最大为4KB
+* 当goroutine的栈空间不足时，golang会调用`runtime.morestack`(汇编实现：asm_xxx.s)来进行动态扩容
 * 连续栈：当栈空间不足的时候申请一个2倍于当前大小的新栈，并把所有数据拷贝到新栈， 接下来的所有调用执行都发生在新栈上。
-* 当function退出时，程序的栈帧会被释放
+* 每个function维护着各自的栈帧(stack frame)，当function退出时会释放栈帧
 
 > 参考链接：
 >   
@@ -63,7 +63,7 @@ func main() {
     0x0009 00009 (test_stack.go:7)  LEAQ    8(SP), BP
     0x000e 00014 (test_stack.go:7)  FUNCDATA    $0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
     0x000e 00014 (test_stack.go:7)  FUNCDATA    $1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
-    // SP(stack ppoint)指向栈顶
+    // SP(stack point)指向栈顶
     // 把4存入SP的位置
     0x000e 00014 (test_stack.go:8)  MOVQ    $4, "".c(SP)
     // 这里会看到没有第9行`call g()`的调用出现，这是因为go汇编编译器会把一些短函数变成内嵌函数，减少函数调用
@@ -81,7 +81,7 @@ func main() {
 
 # Golang逃逸分析
 
-* 在编译程序优化理论中，逃逸分析是一种确定指针动态范围的方法，可以分析在程序的哪些地方可以访问到指针。
+* 在编译程序优化理论中，逃逸分析是一种确定指针动态范围的方法，用于分析在程序的哪些地方可以访问到指针。
 * Golang在编译时的逃逸分析可以减少gc的压力，不逃逸的对象分配在栈上，当函数返回时就回收了资源，不需要gc标记清除。
 * 如果你定义的对象的方法上有同步锁，但在运行时，却只有一个线程在访问，此时逃逸分析后的机器码，会去掉同步锁运行，提高效率。
 
@@ -170,7 +170,7 @@ func main() {
 
 golang只有在function内的对象可能被外部访问时，才会把该对象分配在堆上
 
-* 在g()方法中，ret对象的引用被返回到了方法外，因此会发生逃逸；而p对象的生命周期只在p()内，不会发生逃逸
+* 在g()方法中，ret对象的引用被返回到了方法外，因此会发生逃逸；而p对象的生命周期只在g()内，不会发生逃逸
 * 在main()方法中，c对象虽然被g()方法引用了，但是由于引用的对象c没有在g()方法中发生逃逸，因此对象c的生命周期还是在main()中的，不会发生逃逸
 
 ## 再看一个栗子
@@ -207,7 +207,7 @@ func main() {
 
 * 可以看到，ret和2.2中一样，存在外部引用，发生了逃逸
 * 由于ret.Data是一个指针对象，p赋值给ret.Data后，也伴随p发生了逃逸
-* main()中的对象c，由于作为p传入g()后发生了逃逸，因此c也发生了逃逸
+* main()中的对象c，由于作为参数p传入g()后发生了逃逸，因此c也发生了逃逸
 * 当然，如果定义ret.Data为int(instead of *int)的话，对象p也是不会逃逸的(执行了拷贝)
 
 > 参考链接：

@@ -23,8 +23,9 @@ func main() {
 	fmt.Printf("s2: %v, len(s2): %d, cap(s2): %d\n", s2, len(s2), cap(s2))
 	fmt.Printf("s0: %v, len(s0): %d, cap(s0): %d\n\n", s0, len(s0), cap(s0))
 
-	s3 := append(s1, 5, 6)
+	s3 := append(s1, 8, 9)
 	fmt.Printf("s3: %v, len(s3): %d, cap(s3): %d\n", s3, len(s3), cap(s3))
+	fmt.Printf("s2: %v, len(s2): %d, cap(s2): %d\n", s2, len(s2), cap(s2))
 	fmt.Printf("s0: %v, len(s0): %d, cap(s0): %d\n\n", s0, len(s0), cap(s0))
 }
 ```
@@ -39,13 +40,14 @@ s1: [1 2], len(s1): 2, cap(s1): 4 // 取s0的前个元素构成s1，len = 2, cap
 s2: [1 2 5 6 7], len(s2): 5, cap(s2): 8 // append 5, 6, 7到s1，此时空间不足，按照两倍cap动态扩容，分配一块新的内存空间给s2
 s0: [1 2 3 4], len(s0): 4, cap(s0): 4 // s0不变
 
-s3: [1 2 5 6], len(s3): 4, cap(s3): 4 // append 5, 6到s1，空间足够，无须扩容
-s0: [1 2 5 6], len(s0): 4, cap(s0): 4 // s0的后两个元素被append的6, 7取代
+s3: [1 2 8 9], len(s3): 4, cap(s3): 4 // append 8, 9到s1，空间足够，无须扩容
+s2: [1 2 5 6 7], len(s2): 5, cap(s2): 8 // s2存放在新的内存空间中，不受影响
+s0: [1 2 8 9], len(s0): 4, cap(s0): 4 // s0的后两个元素被append的8, 9取代
 ```
 
 通过以上栗子可以看出：
 
-1. go的slice只有在空间不足时，才会进行动态扩容。所以在日常开发的时候，要尽量避免以下操作：
+1. go的slice只有在空间不足时，才会进行动态扩容，分配新的内存地址。所以在日常开发的时候，要尽量避免以下操作：
 	
 	```javascript
 	func A(i []int){
