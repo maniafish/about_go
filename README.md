@@ -1,8 +1,8 @@
-2018GopherChina学习心得
+2018 GopherChina 大会及培训分享
 ---
 
 ---
 
-* [about GopherChina](https://zdfeng.github.io/about_go/GopherChinaIntroduction.html#1)
-* [about go](intro.md)
-* [go tools](https://zdfeng.github.io/about_go/GopherChinaGoTools.htm#1)
+* [About GopherChina](https://zdfeng.github.io/about_go/GopherChinaIntroduction.html#1)
+* [About Go](intro.md)
+* [Go Tools](https://zdfeng.github.io/about_go/GopherChinaGoTools.htm#1)
