@@ -9,7 +9,7 @@ semantics, guidelines, mechanical sympathy and data oriented design in Go
 
 # Catalog
 
-* [I. Go程序性能指标](performance.md)
+* [I. Go的性能指标](performance.md)
 * [II. Go的堆栈分配](heap_stack.md)
 * [III. Go的垃圾回收](gc.md)
 * [IV. Go的协程](goroutine.md)
