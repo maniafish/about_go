@@ -15,34 +15,30 @@ import "fmt"
 func main() {
 	s0 := []int{1, 2, 3, 4}
 	fmt.Printf("s0: %v, len(s): %d, cap(s): %d\n\n", s0, len(s0), cap(s0))
+	// s0: [1 2 3 4], len(s): 4, cap(s): 4
+	// 初始化一个slice s0，len = cap = 4(不指定cap的情况下，默认cap = len)
 
 	s1 := s0[:2]
 	fmt.Printf("s1: %v, len(s1): %d, cap(s1): %d\n\n", s1, len(s1), cap(s1))
+	// s1: [1 2], len(s1): 2, cap(s1): 4
+	// 取s0的前个元素构成s1，len = 2, cap = 4
 
 	s2 := append(s1, 5, 6, 7)
 	fmt.Printf("s2: %v, len(s2): %d, cap(s2): %d\n", s2, len(s2), cap(s2))
 	fmt.Printf("s0: %v, len(s0): %d, cap(s0): %d\n\n", s0, len(s0), cap(s0))
+	// s2: [1 2 5 6 7], len(s2): 5, cap(s2): 8
+	// append 5, 6, 7到s1，此时空间不足，按照两倍cap动态扩容，分配一块新的内存空间给s2
+	// s0: [1 2 3 4], len(s0): 4, cap(s0): 4
+	// s0不变
 
 	s3 := append(s1, 8, 9)
 	fmt.Printf("s3: %v, len(s3): %d, cap(s3): %d\n", s3, len(s3), cap(s3))
-	fmt.Printf("s2: %v, len(s2): %d, cap(s2): %d\n", s2, len(s2), cap(s2))
 	fmt.Printf("s0: %v, len(s0): %d, cap(s0): %d\n\n", s0, len(s0), cap(s0))
+	// s3: [1 2 8 9], len(s3): 4, cap(s3): 4
+	// append 8, 9到s1，空间足够，无须扩容
+	// s0: [1 2 8 9], len(s0): 4, cap(s0): 4
+	// s0的后两个元素被append的8, 9取代
 }
-```
-
-输出结果为
-
-```javascript
-s0: [1 2 3 4], len(s): 4, cap(s): 4 // 初始化一个slice s0，len = cap = 4(不指定cap的情况下，默认cap = len)
-
-s1: [1 2], len(s1): 2, cap(s1): 4 // 取s0的前个元素构成s1，len = 2, cap = 4
-
-s2: [1 2 5 6 7], len(s2): 5, cap(s2): 8 // append 5, 6, 7到s1，此时空间不足，按照两倍cap动态扩容，分配一块新的内存空间给s2
-s0: [1 2 3 4], len(s0): 4, cap(s0): 4 // s0不变
-
-s3: [1 2 8 9], len(s3): 4, cap(s3): 4 // append 8, 9到s1，空间足够，无须扩容
-s2: [1 2 5 6 7], len(s2): 5, cap(s2): 8 // s2存放在新的内存空间中，不受影响
-s0: [1 2 8 9], len(s0): 4, cap(s0): 4 // s0的后两个元素被append的8, 9取代
 ```
 
 通过以上栗子可以看出：

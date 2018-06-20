@@ -181,6 +181,7 @@ close
 * 可以看到，超过并发数的时候执行了default行为输出了`output: 11`
 * 当然，我们也可以自定义default行为，比如超过并发数的时候停等一小段时间再写入；或者是不设置default行为，超过并发时阻塞写入直到解除阻塞为止。
 * 这个模型还可以结合协程池[grpool](http://km.netease.com/article/245063)，来做一个后台并发写入的日志系统
+* 效率和安全始终是一对矛盾，异步日志虽然能很大程度提高程序效率(不需要等待io操作)；但是如果程序crash，在channel中尚未写入的数据就会丢失。因此在使用的时候也要注意channel的长度设置，如果需要guarantee的，甚至要设置成unbuffer(基本等于同步日志)或者buffer = 1。
 
 # Suggestion
 	

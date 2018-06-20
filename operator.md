@@ -140,44 +140,50 @@ var wg sync.WaitGroup
 func main() {
 	a := 1
 	fmt.Printf("a in main: %p, %d\n", &a, a)
+	// a in main: 0xc420016090, 1 
+	// 在main中声明了变量a，地址为0xc420016090，并给a赋值为1
+	
 	for a := 2; a < 10; a++ {
 		fmt.Printf("a in for: %p, %d\n", &a, a)
+		// a in for: 0xc420016098, 2
+		// 在for循环中通过 := 声明了一个该循环内可见的局部变量a，地址为0xc420016098，并给a赋值为2
+		/*	 
+			a in for: 0xc420016098, 3
+			a in for: 0xc420016098, 4
+			a in for: 0xc420016098, 5
+			a in for: 0xc420016098, 6
+			a in for: 0xc420016098, 7
+			a in for: 0xc420016098, 8
+			a in for: 0xc420016098, 9 
+		*/
+		// 在for循环过程中始终是对这个局部变量a(0xc420016098)的地址做操作，对main中之前声明的a没有影响
 	}
 
 	if a == 1 {
 		a := 2
 		fmt.Printf("a in if: %p, %d\n", &a, a)
+		// a in if: 0xc4200160f8, 2
+		// 在if中通过 := 声明了一个该条件内可见的局部变量a，地址为0xc4200160f8，并给a赋值为2；对main中的a没有影响
 	}
 
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
 		fmt.Printf("a in go before define: %p, %d\n", &a, a)
+		// a in go before define: 0xc420016090, 1
+		// main中声明的局部变量a，在go协程中同样可见
+		
 		a := 3
 		fmt.Printf("a in go after define: %p, %d\n", &a, a)
+		// a in go after define: 0xc420016110, 3
+		// 在go协程中通过 := 声明了一个该协程内可见的局部变量a，地址为00xc42001611，并给a赋值为3，对main中的a没有影响
 	}()
 	wg.Wait()
 
 	// a := 4 这种操作是不被允许的(no new variables on left side of :=)
 	b, a := -3, 4
 	fmt.Printf("a in main after define b %d: %p, %d\n", b, &a, a)
+	// a in main after define b -3: 0xc420016090, 4
+	// 在main中重新通过 := 来同时声明a, b；b被声明为一个新的变量并赋值，a仍然是原来main中的变量a(0xc420016090)，不会被重新声明，只会被赋值
 }
-```
-
-输出结果如下
-
-```javascript
-a in main: 0xc420016090, 1 // 在main中声明了变量a，地址为0xc420016090，并给a赋值为1
-a in for: 0xc420016098, 2 // 在for循环中通过 := 声明了一个该循环内可见的局部变量a，地址为0xc420016098，并给a赋值为2
-a in for: 0xc420016098, 3
-a in for: 0xc420016098, 4
-a in for: 0xc420016098, 5
-a in for: 0xc420016098, 6
-a in for: 0xc420016098, 7
-a in for: 0xc420016098, 8
-a in for: 0xc420016098, 9 // 在for循环过程中始终是对这个局部变量a(0xc420016098)的地址做操作，对main中之前声明的a没有影响
-a in if: 0xc4200160f8, 2 // 在if中通过 := 声明了一个该条件内可见的局部变量a，地址为0xc4200160f8，并给a赋值为2；对main中的a没有影响
-a in go before define: 0xc420016090, 1 // main中声明的局部变量a，在go协程中同样可见
-a in go after define: 0xc420016110, 3 // 在go协程中通过 := 声明了一个该协程内可见的局部变量a，地址为00xc42001611，并给a赋值为3，对main中的a没有影响
-a in main after define b -3: 0xc420016090, 4 // 在main中重新通过 := 来同时声明a, b；b被声明为一个新的变量并赋值，a仍然是原来main中的变量a(0xc420016090)，不会被重新声明，只会被赋值
 ```
