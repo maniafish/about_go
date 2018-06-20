@@ -1,6 +1,6 @@
 # Summary
 
-* [AboutGo](intro.md)
+* [About Go](intro.md)
     * [I. Go的性能指标](performance.md)
     * [II. Go的堆栈分配](heap_stack.md)
     * [III. Go的垃圾回收](gc.md)
