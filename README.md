@@ -3,8 +3,6 @@
 
 ---
 
-# Catalog
-
-* [about\_GopherChina](https://zdfeng.github.io/about_go/GopherChinaIntroduction.html#1)
-* [about\_go](notice.md)
-* [go\_tools](https://zdfeng.github.io/about_go/GopherChinaGoTools.htm#1)
+* [about GopherChina](https://zdfeng.github.io/about_go/GopherChinaIntroduction.html#1)
+* [about go](intro.md)
+* [go tools](https://zdfeng.github.io/about_go/GopherChinaGoTools.htm#1)
