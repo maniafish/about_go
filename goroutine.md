@@ -24,7 +24,7 @@ Go的协程
 
 # Go协程调度
 
-![goroutine](./images/goroutine.jpg)
+![goroutine](./image/goroutine.jpg)
 
 * M：内核线程
 * G：goroutine，并发的最小逻辑单元，由程序创建
@@ -69,7 +69,7 @@ goroutine有三个状态：
 
 channel是go协程通信的主要方式。channel不是队列，可以把它理解为一种信号模型(from William Kennedy)
 
-![channel_type](./images/signaling_with_data.png)
+![channel_type](./image/signaling_with_data.png)
 
 channel分为以下两种类型：
 
@@ -78,7 +78,7 @@ channel分为以下两种类型：
 	
 > 当buffer channel的长度指定为1时，可以作为延迟保证信号使用(信号发送方发送信号后不阻塞等待接收方接收)
 		
-![channel_state](./images/channel_state.png)
+![channel_state](./image/channel_state.png)
 
 * channel有以下三种状态：
 

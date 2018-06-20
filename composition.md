@@ -11,7 +11,7 @@ Go的interface
 
 # 场景1
 
-![composition1](./images/composition1.jpg)
+![composition1](./image/composition1.jpg)
 
 ## 设计思路
 
@@ -82,7 +82,7 @@ func main() {
 
 # 场景2
 
-![composition2](./images/composition2.jpg)
+![composition2](./image/composition2.jpg)
 
 ## 设计思路
 
