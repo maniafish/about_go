@@ -1,0 +1,55 @@
+Gopher China Go Tools 
+
+10:42 19 Jul 2018
+Tags: golang, go tools
+
+fengzhide
+
+
+* go pprof 
+
+- cpu memory 分析工具
+
+    go tool pprof
+
+- golang 火焰图
+    
+    go-torch
+
+
+* GODEBUG
+
+- GC 分析
+
+    GODEBUG=gotrace=1 ./godebug
+    Hey (golang opensource ab)
+    
+
+* go tool trace
+
+- 分析火焰图不能分析的信息
+
+    ./trace > trace.out
+    go tool trace trace.out
+
+    需要安装Graphviz
+
+
+* godoc
+
+- go自带的文档生成分析工具
+
+    godoc -analysis pointer -http=127.0.0.1:8080 (-play)
+
+
+* go lib
+
+- 一些golang特别牛逼的库
+
+.link https://github.com/avelino/awesome-go
+
+    logrus
+    cobra
+
+    Hey
+    json-iterator
