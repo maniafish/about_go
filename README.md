@@ -5,4 +5,4 @@
 
 * [About GopherChina](https://zdfeng.github.io/about_go/GopherChinaIntroduction.html#1)
 * [About Go](intro.md)
-* [Go Tools](https://zdfeng.github.io/about_go/GopherChinaGoTools.htm#1)
+* [Go Tools](https://zdfeng.github.io/about_go/GopherChinaGoTools.html#1)
