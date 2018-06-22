@@ -13,6 +13,8 @@ go1.5以前使用标记清除法(Mark-Sweep)：
 
 go1.5后采用的是三色标记算法(white-grey-black)：
 
+![gc](./image/gc.png)
+
 1. 打开write barrier(写屏障)
 	> write barrier是编译器在每个内存写操作前生成的一个小的代码段，用于在golang gc时监控指针的引用操作，防止误回收。
 	
