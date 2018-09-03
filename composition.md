@@ -86,7 +86,7 @@ func main() {
 
 ## 设计思路
 
-* 系统组件A1~A3都实现了同样的方法Store()，B1~B3实现了Pull()，考虑使用interface进行抽象解耦
+* 系统组件A1\~A3都实现了同样的方法Store()，B1\~B3实现了Pull()，考虑使用interface进行抽象解耦
 * system无需关心具体的A和B，只需要做interface的组合即可
 
 ## 代码示例
