@@ -17,4 +17,5 @@ semantics, guidelines, mechanical sympathy and data oriented design in Go
 * [VI. Go的interface](composition.md)
 * [VII. Go的变量作用域](operator.md)
 * [VIII. Go的slice](slice.md)
+* [IX. Go的defer处理](defer.md)
 * [声明](notice.md)
